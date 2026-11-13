@@ -1,81 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shortly | More Than Just Shorter Links</title>
-</head>
-<body>
-<nav id="nav-one">
-    <a href="/" class="logo">
-        <img src="./img/logo.svg" alt="Shortly home">
-    </a>
-
-    <button class="menu-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav-menu">
-        <span></span>
-        <span></span>
-        <span></span>
-    </button>
-
-    <div id="nav-menu" class="nav-menu">
-        <ul>
-            <li id="Features"><a href="#">Features</a></li>
-            <li id="Pricing"><a href="#">Pricing</a></li>
-            <li id="Resources"><a href="#">Resources</a></li>
-        </ul>
-        <ul>
-            <li id="Login"><a href="#">Login</a></li>
-            <li class="intro-buttons"><button type="button">Sign Up</button></li>
-        </ul>
-    </div>
-</nav>
-<fieldset>
-    <div class="hero-section">
-        <div class="hero-text">
-        <h1>More than just shorter links</h1>
-        <p>Build your brand's recognition and get detailed insights on how your links are performing.</p>
-        <button class="intro-buttons">Get Started</button>
-        </div>
-
-        <div class="hero-image">
-        <img src="./img/illustration-working.svg" alt="Hero Illustration" style="width:75%">
-        </div>
-    </div>
-</fieldset>
-
-<fieldset id="shortener-box">
-    <form id="shortener-form" novalidate>
-
-        <label for="homepage" class="visually-hidden">
-            Enter a URL: 
-        </label>
-
-        <input
-            type="url"
-            id="homepage"
-            name="homepage"
-            placeholder="Shorten a link here..."
-            aria-describedby="url-error"
-            required
-        >
-
-        <small id="url-error" class="error-message" aria-live="polite"></small>
-
-        <button type="submit" id="shorten-button">
-            Shorten It!
-        </button>
-
-    </form>
-</fieldset>
-
-<fieldset id="results-box">
-<section id="results-container" aria-label="Shortened links">
-    <!-- JavaScript will insert shortened links here -->
-</section>
-</fieldset>
-
-
-</body>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
