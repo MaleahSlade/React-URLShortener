@@ -1,18 +1,43 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { shortenURL } from "../api.js";
+
+// Checks the link and returns { url } if it's good, or { error } if not
+function validateURL(value) {
+  if (value === "") {
+    return { error: "Please add a link." };
+  }
+
+  // Be friendly: if they left off https://, add it for them
+  const candidate = /^https?:\/\//i.test(value) ? value : "https://" + value;
+
+  try {
+    const parsed = new URL(candidate);
+
+    // Must end like a real domain, e.g. ".com" or ".io"
+    if (!/\.[a-z]{2,}$/i.test(parsed.hostname)) {
+      return { error: "That doesn't look like a valid link. Try https://example.com" };
+    }
+
+    return { url: candidate };
+  } catch {
+    return { error: "That doesn't look like a valid link. Try https://example.com" };
+  }
+}
 
 export default function ShortenerForm({ onShorten }) {
   const [url, setUrl] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const inputRef = useRef(null); // lets us jump the cursor back into the box
 
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const longURL = url.trim();
+    const result = validateURL(url.trim());
 
-    if (longURL === "") {
-      setError("Please add a link.");
+    if (result.error) {
+      setError(result.error);
+      inputRef.current.focus();
       return;
     }
 
@@ -20,8 +45,8 @@ export default function ShortenerForm({ onShorten }) {
     setLoading(true);
 
     try {
-      const shortURL = await shortenURL(longURL);
-      onShorten(longURL, shortURL);
+      const shortURL = await shortenURL(result.url);
+      onShorten(result.url, shortURL);
       setUrl("");
     } catch (err) {
       console.log(err);
@@ -29,6 +54,11 @@ export default function ShortenerForm({ onShorten }) {
     }
 
     setLoading(false);
+  }
+
+  function handleChange(event) {
+    setUrl(event.target.value);
+    if (error) setError(""); // clear the error as soon as they start fixing it
   }
 
   return (
@@ -39,17 +69,18 @@ export default function ShortenerForm({ onShorten }) {
         </label>
 
         <input
+          ref={inputRef}
           type="url"
           id="homepage"
           name="homepage"
           placeholder="Shorten a link here..."
           aria-describedby="url-error"
-          required
+          aria-invalid={error !== ""}
           value={url}
-          onChange={(event) => setUrl(event.target.value)}
+          onChange={handleChange}
         />
 
-        <small id="url-error" className="error-message" aria-live="polite">
+        <small id="url-error" className="error-message" role="alert">
           {error}
         </small>
 

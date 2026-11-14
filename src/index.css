@@ -9,7 +9,7 @@ button {
 }
 
 h1 {
-    font-size: 32px;
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
 }
 
 a {
@@ -105,8 +105,8 @@ nav img {
     height: auto;
 }
 
-/* ---------- Phones (nav + hero) ---------- */
-@media (max-width: 375px) {
+/* ---------- Phones and small tablets (nav + hero) ---------- */
+@media (max-width: 768px) {
     /* Nav */
     #nav-one {
         flex-wrap: wrap;
@@ -165,9 +165,13 @@ nav img {
     }
 }
 
+/* ---------- Shortener form box ---------- */
 #shortener-box {
-    width: fit-content;
-    margin: 2rem auto;       /* was margin: 0; top/bottom space, centered left/right */
+    width: 90%;
+    max-width: 700px;
+    box-sizing: border-box;
+    min-width: 0;
+    margin: 2rem auto;               /* top/bottom space, centered left/right */
     padding: 1rem;
     border: 0;
     border-radius: 12px;
@@ -183,11 +187,83 @@ fieldset form {
     margin: 0;
 }
 
-/* Shortened link results */
+/* Form layout: input and button sit side by side, then stack when tight */
+#shortener-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+#shortener-form input {
+    order: 1;
+    flex: 1 1 260px;                 /* grow to fill, but wrap below 260px */
+    min-width: 0;
+    padding: 0.8rem 1rem;
+    border: 0;
+    border-radius: 8px;
+    font: inherit;
+}
+
+#shortener-form button {
+    order: 2;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font: inherit;
+    cursor: pointer;
+}
+
+/* Form validation */
+.error-message {
+    display: block;
+    margin-top: 0.5rem;
+    color: #ffb3b3;                  /* light pink so it reads on the dark purple box */
+}
+
+#shortener-form .error-message {
+    order: 3;                        /* error drops to its own row under input + button */
+    flex-basis: 100%;
+    margin-top: 0;
+}
+
+#shortener-form .error-message:empty {
+    display: none;
+}
+
+#homepage[aria-invalid="true"] {
+    border: 2px solid #ffb3b3;
+}
+
+/* ---------- Search bar ---------- */
+.search-bar {
+    width: 90%;
+    max-width: 1100px;
+    margin: 2rem auto 0;
+}
+
+.search-bar input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.8rem 1rem;
+    border: 1px solid #bfbfbf;
+    border-radius: 8px;
+    font: inherit;
+}
+
+.search-bar input:focus-visible {
+    outline: 3px solid #35323e;
+    outline-offset: 2px;
+}
+
+/* ---------- Shortened link results ---------- */
 #results-container {
     width: 90%;
     max-width: 1100px;
     margin: 2rem auto;
+}
+
+.no-results {
+    text-align: center;
 }
 
 .result-card {
@@ -233,7 +309,6 @@ fieldset form {
     background-color: #238f8f;
 }
 
-/* NEW: Delete button */
 .delete-button {
     background-color: #f46262;
     color: #fff;
@@ -249,7 +324,6 @@ fieldset form {
     background-color: #c94a4a;
 }
 
-/* CHANGED: delete button added to the focus outline rule */
 .copy-button:focus-visible,
 .delete-button:focus-visible,
 .shortened-link:focus-visible {
@@ -264,15 +338,13 @@ fieldset form {
         flex-direction: column;
     }
 
-    /* CHANGED: delete button added so both buttons go full width */
     .copy-button,
     .delete-button {
-    width: 100%;
+        width: 100%;
+    }
 }
-}
 
-
-
+/* ---------- Accessibility helper ---------- */
 /* Hides something visually but keeps it for screen readers */
 .visually-hidden {
     position: absolute;
@@ -284,50 +356,4 @@ fieldset form {
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
-}
-
-/* Search bar */
-.search-bar {
-    width: 90%;
-    max-width: 1100px;
-    margin: 2rem auto 0;
-}
-
-.search-bar input {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 0.8rem 1rem;
-    border: 1px solid #bfbfbf;
-    border-radius: 8px;
-    font: inherit;
-}
-
-.search-bar input:focus-visible {
-    outline: 3px solid #35323e;
-    outline-offset: 2px;
-}
-
-.no-results {
-    text-align: center;
-}
-
-/* Delete button */
-.delete-button {
-    background-color: #f46262;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 0.7rem 1.5rem;
-    font: inherit;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.delete-button:hover {
-    background-color: #c94a4a;
-}
-
-.delete-button:focus-visible {
-    outline: 3px solid #35323e;
-    outline-offset: 3px;
 }
